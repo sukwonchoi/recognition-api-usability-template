@@ -8,41 +8,60 @@ export default class App extends Component {
 	
 	constructor(){
 		super();
+		this.clearCanvas = this.clearCanvas.bind(this);
+		this.clearCanvasHandler = this.clearCanvasHandler.bind(this);
+		this.recognitionHandler = this.recognitionHandler.bind(this);
+		this.nextShape = this.nextShape.bind(this);
+		this.check = this.check.bind(this);
+
+		this.shapes = ["O", "H", "exclamation", "five-point star", "arrowhead"];
+		this.index = 0;
 		this.state={
-				shape: "null",
-				/* TODO: Define the initial state of the components */
+				shape: this.shapes[this.index],
+				clearRecognitionCanvas: false,
+				recognize: false,
 		}
 	}
 
-	generateNewShape(){
-
-		var shape = null;
-		
-		/* TODO: set shape to be a randomly generated shape of available gestures */
-
+	clearCanvasHandler(){
 		this.setState({
-			shape: shape,
+	      clearRecognitionCanvas: false,
+	    });
+	}
+
+	recognitionHandler(gesture){
+		console.log("HI");
+		if(gesture.shape == this.shapes[this.index]){
+			console.log("Correct!")
+			this.nextShape();
+		}
+		else{
+			console.log("Expected: " + this.shapes[this.index] + " but got " + gesture.shape);
+		}
+	    this.setState({
+	    	recognize: false,
+	    });
+		this.clearCanvas();
+	}
+
+	nextShape(){
+		this.index = this.shapes.length - 1 == this.index ? 0 : ++this.index;
+		this.setState({
+			shape: this.shapes[this.index],
 		});
 	}
 
 	check(){
-		/* TODO: Logic to create condition if the shape drawn is correct */
-		clearCanvas();
-
-		if(true){
-			generateNewShape();
-			alert("Correct!");
-		}else{
-			alert("Wrong!");
-		}
+		this.setState({
+			recognize: true,
+		});
 	}
 
 	clearCanvas(){
-		/* TODO: Logic to clear the RecognitionCanvas */
-
+		this.setState({
+			clearRecognitionCanvas: true,
+		});
 	}
-
-
 
 	render(){
 		return(
@@ -54,7 +73,16 @@ export default class App extends Component {
 					</Row>
 
 					<Row>
-					{/* RecognitionCanvas goes here */}
+						<RecognitionCanvas
+							width={String(screen.width * 0.8)}
+							height={String(screen.height * 0.5)}
+							doRecognition={this.state.recognize}
+							doClearCanvas={this.state.clearRecognitionCanvas}
+							clearCanvasHandler={this.clearCanvasHandler}
+							recognitionHandler={this.recognitionHandler}
+							recognitionUsingTimeout={false}
+							enabledGestures={this.shapes}
+						/>
 					</Row>
 
 					<Row>
