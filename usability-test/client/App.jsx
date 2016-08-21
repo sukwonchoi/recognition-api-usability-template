@@ -8,17 +8,52 @@ export default class App extends Component {
 	
 	constructor(){
 		super();
+		this.clearCanvas = this.clearCanvas.bind(this);
+		this.clearCanvasHandler = this.clearCanvasHandler.bind(this);
+		this.recognitionHandler = this.recognitionHandler.bind(this);
+		this.nextShape = this.nextShape.bind(this);
+		this.check = this.check.bind(this);
+
+
+		//List of shapes to use in game.
+		this.shapes = ["O", "H", "exclamation", "five-point star", "arrowhead"];
+		this.index = 0;
 		this.state={
-				shape: "null",
-				/* TODO: Define the initial state of the components */
+			shape: this.shapes[this.index],
+			clearRecognitionCanvas: false,
+			recognize: false,
 		}
+
 	}
+
+	clearCanvasHandler(){
+		this.setState({
+			clearRecognitionCanvas: false,
+		});
+	}
+
+	recognitionHandler(gesture){
+
+		/* 
+		 * TODO: determine if recognized shape matches the desired shape. 
+		 * Use Alert() function to tell the user if the drawn shape is correct or wrong.
+		 * Call clearCanvas() after recognition.
+		 */
+
+		this.clearCanvas();
+	}
+
+	nextShape(){
+		this.setState({
+			shape: this.shapes[this.index],
+		});
+	}
+
 
 	generateNewShape(){
 
 		var shape = null;
 		
-		/* TODO: set shape to be a randomly generated shape of available gestures */
 
 		this.setState({
 			shape: shape,
@@ -27,19 +62,17 @@ export default class App extends Component {
 
 	check(){
 		/* TODO: Logic to create condition if the shape drawn is correct */
-		clearCanvas();
+		this.setState({
+			recognize: true,
+		});
 
-		if(true){
-			generateNewShape();
-			alert("Correct!");
-		}else{
-			alert("Wrong!");
-		}
 	}
 
 	clearCanvas(){
 		/* TODO: Logic to clear the RecognitionCanvas */
-
+		this.setState({
+			clearRecognitionCanvas: true,
+		});
 	}
 
 
@@ -55,6 +88,7 @@ export default class App extends Component {
 
 					<Row>
 					{/* RecognitionCanvas goes here */}
+
 					</Row>
 
 					<Row>
