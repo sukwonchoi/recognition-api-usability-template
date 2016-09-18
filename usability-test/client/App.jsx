@@ -33,6 +33,25 @@ export default class App extends Component {
 	}
 
 	recognitionHandler(gesture){
+		// Correct
+		console.log(gesture);
+		if (gesture.shape == this.state.shape) {
+			if (this.index == this.shapes.length - 1) {
+				window.alert('Yaaaaay you win!!!  :D :D');
+				this.index = -1;
+			}else {
+				window.alert('Nice one, you got it!');
+			}
+			// TODO - increment shape
+			this.index++;
+			this.setState({
+				shape: this.shapes[this.index]
+			});
+		} else {
+			window.alert('Even my grand kids could draw that...');
+		}
+
+		// Wrong
 
 		/* 
 		 * TODO: determine if recognized shape matches the desired shape. 
@@ -78,6 +97,9 @@ export default class App extends Component {
 
 
 	render(){
+		var style = {
+			border: '1px solid black',
+		}
 		return(
 			<div className="container">
 				<Grid>
@@ -87,7 +109,17 @@ export default class App extends Component {
 					</Row>
 
 					<Row>
-					{/* RecognitionCanvas goes here */}
+						<RecognitionCanvas
+							width={String(screen.width * 0.8)}
+							height={String(screen.height * 0.5)}
+							style={style}
+							doRecognition={this.state.recognize}
+							doClearCanvas={this.state.clearRecognitionCanvas}
+							clearCanvasHandler={this.clearCanvasHandler}
+							recognitionHandler={this.recognitionHandler}
+							recognitionUsingTimeout={false}
+							enabledGestures={this.shapes}
+						/>
 
 					</Row>
 
