@@ -34,16 +34,28 @@ export default class App extends Component {
 
 	recognitionHandler(gesture){
 
-		/* 
-		 * TODO: determine if recognized shape matches the desired shape. 
-		 * Use Alert() function to tell the user if the drawn shape is correct or wrong.
-		 * Call clearCanvas() after recognition.
-		 */
+		if(gesture.shape == this.shapes[this.index]){
+			alert("correct!!!");
+			this.nextShape();
+		}
+		else{
+			alert("Incorrect");
+		}
+	    this.setState({
+	    	recognize: false,
+	    });
 
 		this.clearCanvas();
 	}
 
 	nextShape(){
+		
+		if(this.shapes.length - 1 == this.index) {
+			this.index = 0;
+		} else {
+			this.index++;
+		}
+
 		this.setState({
 			shape: this.shapes[this.index],
 		});
@@ -86,8 +98,20 @@ export default class App extends Component {
 						<TextArea shape={ this.state.shape }/>
 					</Row>
 
+
 					<Row>
 					{/* RecognitionCanvas goes here */}
+						<RecognitionCanvas
+							width={String(screen.width * 0.8)}
+							height={String(screen.height * 0.5)}
+							doRecognition={this.state.recognize}
+							doClearCanvas={this.state.clearRecognitionCanvas}
+							clearCanvasHandler={this.clearCanvasHandler}
+							recognitionHandler={this.recognitionHandler}
+							recognitionUsingTimeout={false}
+							enabledGestures={this.shapes}
+						/>
+
 
 					</Row>
 
